@@ -1,0 +1,31 @@
+﻿@model rcate_FinancialPortal.Models.Code_First.HouseHold
+
+@{
+    ViewBag.Title = "OneHouseWarning";
+}
+
+<div class="container">
+    <center>
+        <h2>
+            <b>
+                You are currently attempting to create a new House Hold.  Each user can only have ONE House Hold.
+                If you continue, you will be <span class="text-danger">removed</span> from your current House Hold.  This action cannot be
+                undone.
+            </b>
+        </h2>
+
+        <br />
+
+
+        @using (Html.BeginForm("SurrenderHouseId", "HouseHolds", FormMethod.Post))
+        {
+            <h5>
+                <input type="submit" value="Continue" class="btn btn-danger" />
+            </h5>
+        }
+        <p>
+            (By clicking <span class="text-danger">continue</span>, you understand that you will not be able to undo your actions
+            and the only way to return to your previous house hold is by invitation)
+        </p>
+    </center>
+</div>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<rcate_FinancialPortal.Models.Code_First.Accounts>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>
+    <b>My Accounts</b>
+</h2>
+
+<p class="pull-right">
+    <a class="btn btn-default" style="background-color:orange;color:white" href="@Url.Action("Create", "Accounts")">Add Account</a>
+</p>
+
+<br />
+
+<table class="table" style="text-align:center">
+    <tr>
+        <th style="text-align:center">
+            Account
+        </th>
+        <th style="text-align:center">
+            Balance
+        </th>
+        <th style="text-align:center">
+            Type
+        </th>
+        <th style="text-align:center"> 
+            Holder
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td style="border-right:solid 1px black">
+                <a href="@Url.Action("Details", "Accounts", new { id = item.Id })">@Html.DisplayFor(modelItem => item.Name)</a>
+            </td>
+            <td style="border-right:solid 1px black">
+                @if (item.Balance > 0)
+                {
+                    <p>@string.Format("{0:C}", item.Balance)</p>
+                }
+                else
+                {
+                    <p class="text-danger">You are now overdrafting.</p>
+                    <p style="color:red">@string.Format("{0:C}", item.Balance)</p>
+                }
+
+            </td>
+            <td style="border-right:solid 1px black">
+                @Html.DisplayFor(modelItem => item.AccountType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner.FullName)
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,337 @@
+﻿@model rcate_FinancialPortal.Models.Code_First.HouseHold
+@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <center>
+        <a href="@Url.Action("Edit", "HouseHolds", new { id = Model.Id })">Edit House</a>
+
+        <h2>
+            <b>
+                My House Hold: <span style="color:red">@Model.Name</span>
+            </b>
+        </h2>
+        <i>"@Model.Description"</i>
+    </center>
+    <div class="pull-right">
+
+        <a class="btn btn-default" href="@Url.Action("CreateHouseholdMember", "Account")">Add new Member</a>
+        <br />
+        <br />
+        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#leaveHouse">Leave House-Hold</a>
+
+
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default" style="width:340px;height:auto;font-size:18px">
+            <div class="panel-heading">
+                <center>
+                    <b>House Mates</b>
+                </center>
+            </div>
+            @if (Model.OwnerId == User.Identity.GetUserId())
+            {
+                <div class="panel-body">
+                    @foreach (var user in Model.Members)
+                    {
+                        <a href="#" style="text-decoration:none" data-toggle="modal" data-target="#@user.Id"><span class="fa fa-trash-o"></span> &nbsp;</a> @user.FullName<br />
+
+                            <!-- Kick User Modal -->
+                            <div id="@user.Id" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+
+                                            <center>
+                                                <h4>
+                                                    <b>
+                                                        Are you sure you want to kick this user?
+                                                    </b>
+                                                </h4>
+
+                                                <br />
+
+                                                @using (Html.BeginForm("KickUser", "HouseHolds", new { id = user.Id }, FormMethod.Post, null))
+                                                {
+                                                    <input type="submit" style="background-color:orange;color:white;border-color:orange;border-radius:5px"
+                                                           value="Yes! Kick 'em!" />
+                                                }
+
+                                                <br />
+
+                                                <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Never mind...</button>
+                                            </center>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                    }
+                </div>
+            }
+            @if (Model.OwnerId != User.Identity.GetUserId())
+            {
+                <div class="panel-body">
+                    @foreach (var user in Model.Members)
+                    {
+                        @user.FullName<br />
+                    }
+                </div>
+            }
+
+            <div class="panel-footer">
+            </div>
+        </div>
+
+<br />
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4><b>Accounts</b></h4>
+            </div>
+            <div class="panel-body">
+                @foreach (var item in Model.Accounts)
+                {
+                    <div class="row">
+                        @if (item.Balance > 0)
+                        {
+                            <div class="col-md-8 text-center" style="border-right:solid 2px black">
+                                <b>Name: </b> @item.Name <br />
+                                <b>Balance: </b> @string.Format("{0:C}", item.Balance) <br />
+                                <b>Type: </b> @item.AccountType.Name
+                            </div>
+                        }
+                        @if (item.Balance <= 0)
+                        {
+                            <div class="col-md-8 text-center" style="border-right:solid 2px black;color:red">
+                                <h6><b>OVERDRAFT WARNING</b></h6>
+
+                                <br />
+
+                                <b>Name: &nbsp; </b> @item.Name <br />
+
+                                <b>Balance: &nbsp; </b> <span>@string.Format("{0:C}", item.Balance)</span> <br />
+
+                                <b>Type: &nbsp; </b> @item.AccountType.Name
+                            </div>
+                        }
+                        
+                        <div class="col-md-4 text-center">
+                            <div style="padding-top:25px">
+                                @if (item.OwnerId == User.Identity.GetUserId() || Model.OwnerId == User.Identity.GetUserId())
+                                {
+                                    <a style="color:black" title="Edit" href="@Url.Action("Edit", "Accounts", new { id = item.Id })"><span class="fa fa-pencil"></span></a>
+                                    <span>&nbsp;</span>
+                                }
+                                
+                                <a style="color:black" title="Details" href="@Url.Action("Details", "Accounts", new { id = item.Id })"><span class="fa fa-info-circle"></span></a>
+                                &nbsp;
+                                <a style="color:red" title="Delete" href="@Url.Action("Delete", "Accounts", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                }
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 style="text-align:center"><b>Transactions</b></h4>
+            </div>
+            <div class="panel-body">
+                @if (Model.Transactions.Count() == 0)
+                {
+                    <h6><b>You have no transactions.</b></h6>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr>
+                            <th>
+                                Owners Name
+                            </th>
+                            <th>
+                                Trans. Name
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Amount
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th></th>
+                        </tr>
+                        @foreach (var item in Model.Transactions)
+                        {
+                            if (item.Void != true)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Author.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Category.Name)
+                                    </td>
+                                    <td>
+                                        @string.Format("{0:C}", item.Amount)
+                                    </td>
+                                    <td>
+                                        @Model.Created.ToString("d")
+                                    </td>
+                                    <td>
+                                        @if (item.AuthorId == User.Identity.GetUserId() || Model.OwnerId == User.Identity.GetUserId())
+                                        {
+                                            <a style="color:black" title="Edit" href="@Url.Action("Edit", "Transactions", new { id = item.Id })"><span class="fa fa-pencil"></span></a>
+                                            <span>&nbsp;</span>
+                                        }
+                                        <a style="color:black" title="Details" href="@Url.Action("Details", "Transactions", new { id = item.Id })"><span class="fa fa-info-circle"></span></a>
+                                        &nbsp;
+                                        <a style="color:red" title="Delete" href="@Url.Action("Delete", "Transactions", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                                    </td>
+                                </tr>
+                            }
+                            if (item.Void == true)
+                            {
+                                <tr style="background-color:whitesmoke;color:red">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Author.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Category.Name)
+                                    </td>
+                                    <td>
+                                        @string.Format("{0:C}", item.Amount)
+                                    </td>
+                                    <td>
+                                        @Model.Created.ToString("d")
+                                    </td>
+                                    <td>
+                                        @if (item.AuthorId == User.Identity.GetUserId() || Model.OwnerId == User.Identity.GetUserId())
+                                        {
+                                            <a style="color:black" title="Edit" href="@Url.Action("Edit", "Accounts", new { id = item.Id })"><span class="fa fa-pencil"></span></a>
+                                            <span>&nbsp;</span>
+                                        }
+                                        <a style="color:black" title="Details" href="@Url.Action("Details", "Transactions", new { id = item.Id })"><span class="fa fa-info-circle"></span></a>
+                                        &nbsp;
+                                        <a style="color:red" title="Delete" href="@Url.Action("Delete", "Transactions", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+
+                }
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- Leave House Modal -->
+<div id="leaveHouse" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b>Leave House?</b></h4>
+            </div>
+            <div class="modal-body">
+
+                <center>
+                    <h4>
+                        <b>
+                            You're about to <span class="text-danger">leave</span> your current House-Hold.  Once you perform this action, it cannot be undone.
+                            The only way you can return is by invitation.
+                            <br />
+                            <br />
+                            Are you sure you would like to continue?
+                        </b>
+                    </h4>
+
+                    <br />
+
+                    @using (Html.BeginForm("SurrenderHouseId", "HouseHolds", FormMethod.Post))
+                    {
+                        <input type="submit" value="Leave House" class="btn btn-danger" />
+                    }
+                </center>
+
+            </div>
+            <div class="modal-footer">
+                <center>
+                    <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+                </center>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Kick User Modal -->
+<div id="KickUser" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+
+                <center>
+                    <h4>
+                        <b>
+                            Are you sure you want to kick this user?
+                        </b>
+                    </h4>
+
+                    <br />
+
+                    @using (Html.BeginForm("KickUser", "HouseHolds", FormMethod.Post))
+                    {
+                        <input type="submit" value="Yes!" class="btn btn-danger" />
+                    }
+                </center>
+
+            </div>
+            <div class="modal-footer">
+                <center>
+                    <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Never mind...</button>
+                </center>
+            </div>
+        </div>
+
+    </div>
+</div>

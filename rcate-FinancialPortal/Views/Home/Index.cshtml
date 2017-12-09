@@ -1,0 +1,268 @@
+﻿@model rcate_FinancialPortal.Models.Code_First.HouseHold
+@using Microsoft.AspNet.Identity;
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron" style="background-color:orangered;color:white;padding-bottom:30px">
+    @if (DateTimeOffset.Now.Hour < 12)
+    {
+        <h1><b>Good Morning, @ViewBag.DisplayName!</b></h1>
+    }
+    @if (DateTimeOffset.Now.Hour < 17 && DateTimeOffset.Now.Hour >= 12)
+    {
+        <h1><b>Good Afternoon, @ViewBag.DisplayName!</b></h1>
+    }
+    @if (DateTimeOffset.Now.Hour < 24 && DateTimeOffset.Now.Hour >= 17)
+    {
+        <h1><b>Good Evening, @ViewBag.DisplayName!</b></h1>
+    }
+
+    <br />
+
+    <h3>
+        <b>Here is your Personal Summary..</b>
+    </h3>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default" style="width:310px;height:auto;font-size:18px">
+                <div class="panel-heading">
+                    <center>
+                        <b>House Mates</b>
+                    </center>
+                </div>
+                @if (Model.OwnerId == User.Identity.GetUserId())
+                {
+                    <div class="panel-body">
+                        @foreach (var user in Model.Members)
+                        {
+                            <a href="#" style="text-decoration:none" data-toggle="modal" data-target="#@user.Id"><span class="fa fa-trash-o"></span> &nbsp;</a> @user.FullName<br />
+
+                            <!-- Kick User Modal -->
+                            <div id="@user.Id" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+
+                                            <center>
+                                                <h4>
+                                                    <b>
+                                                        Are you sure you want to kick this user?
+                                                    </b>
+                                                </h4>
+
+                                                <br />
+
+                                                @using (Html.BeginForm("KickUser", "HouseHolds", new { id = user.Id }, FormMethod.Post, null))
+                                                {
+                                                    <input type="submit" style="background-color:orange;color:white;border-color:orange;border-radius:5px"
+                                                           value="Yes! Kick 'em!" />
+                                                }
+
+                                                <br />
+
+                                                <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Never mind...</button>
+                                            </center>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                @if (Model.OwnerId != User.Identity.GetUserId())
+                {
+                    <div class="panel-body">
+                        @foreach (var user in Model.Members)
+                        {
+                            @user.FullName<br />
+                        }
+                    </div>
+                }
+
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-8">
+            <div class="panel panel-default" style="margin-left:5px">
+                <div class="panel-heading">
+                    <center>
+                        <h4><b>My Accounts</b></h4>
+                    </center>
+                </div>
+                <div class="panel-body">
+                    @foreach (var account in Model.Accounts.Where(a => a.OwnerId == User.Identity.GetUserId()))
+                    {
+                        <div class="row">
+                            @if (account.Balance > 0)
+                            {
+                                <div class="col-md-8 text-center" style="border-right:solid 2px black">
+                                    <b>Name: &nbsp; </b> @account.Name <br />
+
+                                    <b>Balance: &nbsp; </b> <span>@string.Format("{0:C}", account.Balance)</span> <br />
+
+                                    <b>Type: &nbsp; </b> @account.AccountType.Name
+                                </div>
+                            }
+                            @if (account.Balance <= 0)
+                            {
+                                <div class="col-md-8 text-center" style="border-right:solid 2px black;color:red">
+                                    <h6><b>OVERDRAFT WARNING</b></h6>
+
+                                    <br />
+
+                                    <b>Name: &nbsp; </b> @account.Name <br />
+
+                                    <b>Balance: &nbsp; </b> <span>@string.Format("{0:C}", account.Balance)</span> <br />
+
+                                    <b>Type: &nbsp; </b> @account.AccountType.Name
+                                </div>
+                            }
+                            <div class="col-md-4 text-center">
+                                <div style="padding-top:25px">
+                                    <a style="color:black" title="Edit" href="@Url.Action("Edit", "Accounts", new { id = account.Id })"><span class="fa fa-pencil"></span></a>
+                                    <a style="color:black;margin-left:30px" title="Details" href="@Url.Action("Details", "Accounts", new { id = account.Id })"><span class="fa fa-info-circle"></span></a>
+                                    <a style="color:red;margin-left:30px" title="Delete" href="@Url.Action("Delete", "Accounts", new { id = account.Id })"><span class="fa fa-trash-o"></span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                    }
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default" style="width:1100px">
+    <div class="panel-heading">
+        <center>
+            <h4><b>My Transactions</b></h4>
+        </center>
+    </div>
+    <div class="panel-body">
+        @if (Model.Transactions.Count() == 0)
+            {
+            <h6><b>You have no transactions.</b></h6>
+        }
+        else
+        {
+
+            <table class="table">
+                <tr>
+                    <th>
+                        Owners Name
+                    </th>
+                    <th>
+                        Trans. Name
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.Transactions.Where(t => t.AuthorId == User.Identity.GetUserId()))
+                {
+                    if (item.Void != true)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Author.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @string.Format("{0:C}", item.Amount)
+                            </td>
+                            <td>
+                                @Model.Created.ToString("d")
+                            </td>
+                            <td>
+                                <a style="color:black" title="Edit" href="@Url.Action("Edit", "Transactions", new { id = item.Id })"><span class="fa fa-pencil"></span></a>
+                                &nbsp;
+                                <a style="color:black" title="Details" href="@Url.Action("Details", "Transactions", new { id = item.Id })"><span class="fa fa-info-circle"></span></a>
+                                &nbsp;
+                                <a style="color:red" title="Delete" href="@Url.Action("Delete", "Transactions", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                            </td>
+                        </tr>
+                    }
+                    if (item.Void == true)
+                    {
+                        <tr style="background-color:whitesmoke">
+                            <td style="color:red">
+                                @Html.DisplayFor(modelItem => item.Author.FullName)
+                            </td>
+                            <td style="color:red">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td style="color:red">
+                                @Html.DisplayFor(modelItem => item.Category.Name)
+                            </td>
+                            <td style="color:red">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td style="color:red">
+                                @string.Format("{0:C}", item.Amount)
+                            </td>
+                            <td style="color:red">
+                                @Model.Created.ToString("d")
+                            </td>
+                            <td>
+                                <a style="color:black" title="Edit" href="@Url.Action("Edit", "Transactions", new { id = item.Id })"><span class="fa fa-pencil"></span></a>
+                                &nbsp;
+                                <a style="color:black" title="Details" href="@Url.Action("Details", "Transactions", new { id = item.Id })"><span class="fa fa-info-circle"></span></a>
+                                &nbsp;
+                                <a style="color:red" title="Delete" href="@Url.Action("Delete", "Transactions", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </table>
+
+            <hr />
+
+        }
+
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>
+
+
+
+@section scripts {
+
+}

@@ -1,0 +1,42 @@
+﻿@model rcate_FinancialPortal.Models.CreateMemberViewModel
+
+@{
+    ViewBag.Title = "CreateHouseholdMember";
+}
+
+<center>
+
+    @using (Html.BeginForm("CreateHouseholdMember", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <h3><b>By submitting this invitation, you are creating an new account.  Once the recipient accepts the request,
+            they will be promted to create a password.</b></h3>
+
+        <h3><b>Please enter the desired Email, Name, and Display Name of the user you wish to invite.</b></h3>
+
+        <br />
+
+        <p>(NOTE: You will not be able to undo this action, so please check to make sure the information is correct)</p>
+
+        <br />
+
+        <input type="email" name="Email" placeholder="Email" style="width:300px;height:40px;text-align:center" />
+        <br />
+        <br /> 
+        <input type="text" name="FirstName" placeholder="First Name" style="width:300px;height:40px;text-align:center" />
+        <br />
+        <br />
+        <input type="text" name="LastName" placeholder="Last Name" style="width:300px;height:40px;text-align:center" />
+        <br />
+        <br />
+        <input type="text" name="DisplayName" placeholder="Display Name" style="width:300px;height:40px;text-align:center" />
+
+        <br />
+        <br />
+
+        <input type="submit" class="btn btn-default" style="background-color:orange;color:white;padding:10px 30px 10px 30px" value="Send" />
+    }
+
+</center>
+

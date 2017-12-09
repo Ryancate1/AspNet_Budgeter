@@ -1,0 +1,142 @@
+﻿@model IEnumerable<rcate_FinancialPortal.Models.Code_First.Transaction>
+@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<div style="padding-bottom:60px">
+    <h2>
+        <b>House Transactions</b>
+    </h2>
+
+    <p class="pull-right">
+        <a class="btn btn-default" style="background-color:orange;color:white" href="@Url.Action("Create", "Transactions")">Create New Transactions</a>
+    </p>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <center>
+            <h4><b>House Transactions</b></h4>
+        </center>
+    </div>
+    <div class="panel-body">
+        @if (Model.Count() == 0)
+        {
+            <h6><b>You have no transactions.</b></h6>
+        }
+        else
+        {
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>
+                        Owners Name
+                    </th>
+                    <th>
+                        Trans. Name
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+
+                    if (item.Void != true)
+                    {
+                        <tr>
+                            <td></td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Author.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @string.Format("{0:C}", item.Amount)
+                            </td>
+                            <td>
+                                @item.Created.ToString("d")
+                            </td>
+                            <td class="pull-right">
+                                <a style="color:black" title="Edit" href="@Url.Action("Edit", "Transactions", new { id = item.Id })"><span class="fa fa-pencil"></span></a>
+                                &nbsp;
+                                <a style="color:black" title="Details" href="@Url.Action("Details", "Transactions", new { id = item.Id })"><span class="fa fa-info-circle"></span></a>
+                                &nbsp;
+                                <a style="color:red" title="Delete" href="@Url.Action("Delete", "Transactions", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                                <br />
+                                @using (Html.BeginForm("VoidTransaction", "Transactions", new { id = item.Id }, FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="submit" style="color:red;background-color:transparent;border:none" value="VOID" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                    if (item.Void == true)
+                    {
+                        <tr style="background-color:whitesmoke;color:red">
+                            <td>
+                                <p style="color:red">VOIDED</p>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Author.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @string.Format("{0:C}", item.Amount)
+                            </td>
+                            <td>
+                                @item.Created.ToString("d")
+                            </td>
+                            <td class="pull-right">
+                                <a style="color:black" title="Edit" href="@Url.Action("Edit", "Transactions", new { id = item.Id })"><span class="fa fa-pencil"></span></a>
+                                &nbsp;
+                                <a style="color:black" title="Details" href="@Url.Action("Details", "Transactions", new { id = item.Id })"><span class="fa fa-info-circle"></span></a>
+                                &nbsp;
+                                <a style="color:red" title="Delete" href="@Url.Action("Delete", "Transactions", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                                <br />
+                                @using (Html.BeginForm("UnVoidTransaction", "Transactions", new { id = item.Id }, FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="submit" style="color:red;background-color:transparent;border:none" value="Undo Void" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+
+                <hr />
+        }
+
+    </div>
+    <div class="panel panel-footer"></div>
+</div>

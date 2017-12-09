@@ -1,0 +1,166 @@
+﻿@using Microsoft.AspNet.Identity
+
+@model rcate_FinancialPortal.Models.Code_First.Accounts
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<h2>
+    <b>
+        Account Details for <span style="color:orangered">@Html.DisplayFor(model => model.Name)</span>
+    </b>
+</h2>
+
+<hr />
+
+
+
+<div>
+    <dl class="dl-horizontal">
+
+        <dt>
+            Acct. Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountType.Name)
+        </dd>
+
+        <br />
+
+        <dt>
+            Acct. Description
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <br />
+
+        <dt>
+            Opened Date
+        </dt>
+
+        <dd>
+            @Model.Opened.ToString("d")
+        </dd>
+
+        <br />
+
+        <dt>
+            Acct. Owner
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Owner.FullName)
+        </dd>
+
+        <br />
+
+        <dt>
+            Balance
+        </dt>
+
+        <dd>
+            <p>@string.Format("{0:C}", Model.Balance)</p>
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to Accounts", "Index")<br />
+
+
+    @if (Model.OwnerId == User.Identity.GetUserId() || Model.HouseHold.OwnerId == User.Identity.GetUserId())
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) 
+        
+        <br />
+        <br />
+
+        <a class="btn btn-danger" href="@Url.Action("Delete", "Accounts", new { id = Model.Id })">DELETE ACCOUNT</a> <br />
+    }
+</p>
+
+<br />
+<hr />
+
+<h3>Transactions</h3>
+
+<table class="table">
+    <tr>
+        <th>
+            Owners Name
+        </th>
+        <th>
+            Trans. Name
+        </th>
+        <th>
+            Category
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Amount
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Reconciled Amount
+        </th>
+        <th>
+            Reconciled
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Transactions)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @string.Format("{0:C}", item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @string.Format("{0:C}", item.ReconciledAmount)
+            </td>
+            <td>
+                @if (item.Reconciled == true)
+                {
+                    <p>Yes</p>
+                }
+                else
+                {
+                    <p>No</p>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+
+
+

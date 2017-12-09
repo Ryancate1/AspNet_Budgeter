@@ -1,0 +1,259 @@
+﻿
+@{
+    ViewBag.Title = "UnauthorizedIndex";
+}
+
+<head>
+    <style>
+        #priceTab {
+            background-color: orangered;
+            color: white;
+        }
+
+        #reviews {
+            font-family: sans-serif;
+            padding-top: 60px;
+            padding-bottom: 60px
+        }
+    </style>
+</head>
+
+@*<div class="jumbotron" style="background-color:orangered;color:white">
+    <center>
+        <h1><b>ROC Financial Helper</b></h1>
+    </center>
+</div>
+
+<br />
+<br />*@
+
+<div class="hero" id="highlighted" style="border-bottom:orange 2px solid">
+    <div class="inner">
+        <!--Slideshow-->
+        <div id="highlighted-slider" class="container">
+            <div class="item-slider" data-toggle="owlcarousel" data-owlcarousel-settings='{"singleItem":true, "navigation":true, "transitionStyle":"fadeUp"}'>
+                <!--Slideshow content-->
+                <!--Slide 1-->
+                <div class="item">
+                    <div class="row">
+                        <div class="col-md-5 hidden-xs">
+                            <img src="~/Assets/Images/money-bag.png" alt="Slide 1" class="center-block img-responsive">
+                        </div>
+                        <div class="col-md-7 item-caption">
+                            <h2 class="h1 text-weight-light" style="color:black">
+                                Welcome to <span class="text-primary">Mandle</span>
+                            </h2>
+                            <br />
+                            <h4 style="color:black">
+                                <b>
+                                    A Fantastic way to Keep Track of Your Spending!
+                                </b>
+                            </h4>
+                            <br />
+                            <p style="color:black">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt <br /> ut labore
+                                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation <br /> ullamco
+                                laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+                            <a href="@Url.Action("Register", "Account")" class="btn btn-more btn-lg i-right">Sign Up Now <i class="fa fa-pencil"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!--Slide 2-->
+                <div class="item">
+                    <div class="row">
+                        <div class="col-md-7 text-right-md item-caption">
+                            <h2 class="h1 text-weight-light" style="color:black">
+                                <span class="text-primary">Mandle</span>
+                            </h2>
+                            <br />
+                            <h4 style="color:black">
+                                <b>We are here to help you!</b>
+                            </h4>
+                            <br />
+                            <p style="color:black">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt <br /> ut labore
+                                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation <br /> ullamco
+                                laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <a href="@Url.Action("Mission", "Home")" class="btn btn-more btn-lg"><i class="fa fa-plus"></i> Learn More</a>
+                        </div>
+                        <div class="col-md-5 hidden-xs">
+                            <img src="~/Assets/Images/home-slide-2.png" alt="Slide 2" class="center-block img-responsive">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+
+<strong>
+
+    <!-- Services -->
+    <div class="services block block-bg-gradient block-border-bottom" id="services">
+        <div class="container">
+            <h2 class="block-title">
+                Our Services
+            </h2>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <span class="fa-stack fa-5x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-group fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="text-weight-strong">
+                        House Holds
+                    </h4>
+                    <p>Gather all of your family together into one house where you will share Accounts, Transactions, and Budgets.</p>
+                    <p>
+                        <a href="#" class="btn btn-more i-right">Learn More <i class="fa fa-angle-right"></i></a>
+                    </p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <span class="fa-stack fa-5x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="text-weight-strong">
+                        Transactions
+                    </h4>
+                    <p>Keep track of your spending by recording all of your Transactions every day.  If your we see that you have spent to much under a Budget, 
+                    we will inform you so that you can get back on track.</p>
+                    <p>
+                        <a href="#" class="btn btn-more i-right">Learn More <i class="fa fa-angle-right"></i></a>
+                    </p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <span class="fa-stack fa-5x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-cogs fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="text-weight-strong">
+                        Accounts
+                    </h4>
+                    <p>Have one joint Account? Seperate?  One for each <br /> family member?  No problem!  Find the right plan for <br /> you and have an
+                    account everyone to keep track of <br /> your balance and Transactions.</p>
+                    <p>
+                        <a href="#" class="btn btn-more i-right">Learn More <i class="fa fa-angle-right"></i></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <!--Customer Reviews-->
+    @*<div id="reviews" class="text-center testimonials block-contained">
+
+        <h2>What our Customers say...</h2>
+
+        <br>
+
+        <i>- "10 out of 10! Love it!"</i>
+
+        <br>
+        <br>
+
+        <i>-  "We can't express how much we needed this. Thank you!!"</i>
+
+        <br>
+        <br>
+
+        <i>
+            - "We we're struggling to pay out bills every month until we came across this website.  Now we can afford to have fun every now
+            and then.  Thanks so much!"
+        </i>
+
+    </div>
+
+    <br>
+    <br>*@
+
+    <div class="container">
+
+        <!-- Pricing Panels -->
+        <div id="pricing" class="container-fluid">
+            <h2 class="text-center">
+                <b>Choose a Plan thats Right for You</b>
+            </h2>
+
+            <br />
+            
+            <div class="row slideanim">
+                <div id="radius" class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div id="priceTab" class="panel-heading">
+                            <h1><b>Basic</b></h1>
+                        </div>
+                        <div class="panel-body">
+                            <p><strong>8</strong> Bank Accounts</p>
+                            <p><strong>5</strong> Members</p>
+                            <p><strong>10</strong> Budgets</p>
+                        </div>
+                        <div class="panel-footer">
+                            <h3><b>$0.00</b></h3>
+                            <h4><b>Per Month</b></h4>
+                            <a class="btn" style="background-color:orangered;color:white" href="@Url.Action("Register", "Account")">Sign Up</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="radius" class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div id="priceTab" class="panel-heading">
+                            <h1><b>Pro</b></h1>
+                        </div>
+                        <div class="panel-body">
+                            <p><strong>13</strong> Bank Accounts</p>
+                            <p><strong>10</strong> Members</p>
+                            <p><strong>20</strong> Budgets</p>
+                        </div>
+                        <div class="panel-footer">
+                            <h3><b>$5.99</b></h3>
+                            <h4><b>per month</b></h4>
+                            <button class="btn" style="background-color: orangered;color: white">Currently Unavaiable</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="radius" class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div id="priceTab" class="panel-heading">
+                            <h1><b>Premium</b></h1>
+                        </div>
+                        <div class="panel-body">
+                            <p><strong>20</strong> Bank Accounts</p>
+                            <p><strong>18</strong> Members</p>
+                            <p><strong>Unlimited</strong> Budgets</p>
+                        </div>
+                        <div class="panel-footer">
+                            <h3><b>$10.99</b></h3>
+                            <h4><b>per month</b></h4>
+                            <button class="btn" style="background-color: orangered;color: white">Currently Unavaiable</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</strong>
+
+@*<div class="container" style="padding-top:50px;padding-bottom:50px">
+        <h4>
+            <b>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+                <br />
+                <br />
+
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur
+                adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </b>
+        </h4>
+    </div>*@

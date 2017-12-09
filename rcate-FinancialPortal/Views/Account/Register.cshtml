@@ -1,0 +1,116 @@
+﻿@model rcate_FinancialPortal.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<center>
+    <h2><b>Register as a New User</b></h2>
+</center>
+
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <div class="row">
+        @*<div class="col-md-6">*@
+        <center>
+
+            <div class="form-group">
+                <label>Email</label>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", style = "width: 450px", placeholder = "..." })
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label>First Name</label>
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", style = "width: 450px", placeholder = "..." })
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label>Last Name</label>
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", style = "width: 450px", placeholder = "..." })
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label>Display Name</label>
+                @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control", style = "width: 450px", placeholder = "..." })
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label>Password</label>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", style = "width: 450px", placeholder = "..." })
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", style = "width: 450px", placeholder = "..." })
+            </div>
+
+        </center>
+        @*<div class="form-group">
+                <label>Time Zone</label>
+                @Html.DropDownList("TimeZone", null, "Select One", new { @class = "searchable-select" })
+            </div>*@
+    </div>
+
+    <br />
+
+    <center>
+        <div>
+            <input type="submit" class="btn btn-default btn-block" style="background-color:orangered;color:white;width:250px" value="Register" />
+        </div>
+    </center>
+}
+
+<center>
+    @*<p>(** - Optional) </p>*@
+</center>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var fileInput = document.getElementById('fileUpload');
+        var fileDisplayArea = document.getElementById('fileDisplay');
+
+        //File Reader Function for displaying images
+        fileInput.addEventListener('change', function (e) {
+            var file = fileInput.files[0];
+            var imageType = /image.*/;
+
+            if (file.type.match(imageType)) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    fileDisplayArea.innerHTML = "";
+
+                    // Create a new image.
+                    var img = new Image();
+                    // Set the img src property using the data URL.
+                    img.src = reader.result;
+                    // Add the image to the page.
+                    fileDisplayArea.appendChild(img);
+                }
+
+                reader.readAsDataURL(file);
+            }
+
+            else {
+                fileDisplayArea.innerHTML = "File not supported!";
+            }
+        });
+    </script>
+}

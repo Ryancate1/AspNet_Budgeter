@@ -1,0 +1,24 @@
+﻿@model rcate_FinancialPortal.Models.Code_First.HouseHold
+
+
+@{
+    ViewBag.Title = "CreateJoinHouseHold";
+}
+
+<center>
+    <h2>Create a House Hold</h2>
+
+    <br />
+
+    @using (Html.BeginForm("Create", "HouseHolds", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <input name="Name" placeholder="Name" class="form-control" />
+        <br />
+        <input name="Description" placeholder="Description" class="form-control" />
+        <br />
+        <input type="submit" class="btn btn-default" style="background-color:orange" value="Create" />
+    }
+    
+</center>   

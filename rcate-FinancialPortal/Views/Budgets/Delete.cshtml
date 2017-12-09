@@ -1,0 +1,68 @@
+﻿@model rcate_FinancialPortal.Models.Code_First.Budget
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>
+    <b>Are you sure you want to delete this Budget: "<span style="color:red">@Model.Name</span>"?</b></h2>
+<div>
+    <hr />
+    <div class="panel panel-default">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                </tr>
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(Model => Model.Name)
+                        </td>
+                        <td>
+                            @if (Model.Description == null)
+                            {
+                                <i>No Description</i>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(Model => Model.Description)
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Model => Model.Category.Name)
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", Model.Amount)
+                        </td>
+                    </tr>
+
+            </table>
+        </div>
+        <div class="panel-footer">
+        </div>
+    </div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <br />
+            <br />
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

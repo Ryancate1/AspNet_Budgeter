@@ -1,0 +1,364 @@
+﻿@{
+    var user = User.Identity.GetUserId();
+}
+@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ROC Financial Portal</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="~/Assets/Flexor/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="~/Assets/Flexor/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Assets/Flexor/lib/owlcarousel/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/Assets/Flexor/lib/owlcarousel/owl.theme.min.css" rel="stylesheet">
+    <link href="~/Assets/Flexor/lib/owlcarousel/owl.transitions.min.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/Assets/Flexor/Favicon/favicon (1).ico" type="image/x-icon">
+    <link rel="icon" href="~/Assets/Flexor/Favicon/favicon (1).ico" type="image/x-icon">
+
+    <!-- Main Stylesheet File -->
+    <link href="~/Assets/Flexor/css/style.css" rel="stylesheet">
+
+    <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
+    <link href="#" id="colour-scheme" rel="stylesheet">
+
+    @Styles.Render("~/Assets/Flexor/css/style.css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+
+<body>
+
+    <!--Change the background class to alter background image, options are: benches, boots, buildings, city, metro -->
+    <div id="background-wrapper" class="buildings" data-stellar-background-ratio="0.8">
+
+        <!-- ======== Region: #navigation ======== -->
+        <div id="navigation" class="wrapper">
+            <!--Header & navbar-branding region-->
+            <div class="header">
+                <div class="header-inner container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!--navbar-branding/logo - hidden image tag & site name so things like Facebook to pick up, actual logo set via CSS for flexibility -->
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a class="navbar-brand" href="@Url.Action("Index", "Home")" title="Home">
+                                    <h1 class="hidden">
+                                        <img src="~/Assets/Images/logo.png" alt="Flexor Logo">
+                                    </h1>
+                                </a>
+                            }
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <a class="navbar-brand" href="@Url.Action("UnauthorizedIndex", "Home")" title="Home">
+                                    <h1 class="hidden">
+                                        <img src="~/Assets/Images/logo.png" alt="Flexor Logo">
+                                    </h1>
+                                </a>
+                            }
+
+                            <div class="navbar-slogan">
+                                The Next Step in Becoming Financially Stable.
+                            </div>
+                        </div>
+                        <!--header rightside-->
+                        <div class="col-md-4">
+                            <!--user menu-->
+                            <ul class="list-inline user-menu pull-right">
+                                @Html.Partial("_LoginPartial")
+                                @*<li class="hidden-xs"><i class="fa fa-edit text-primary"></i> <a href="@Url.Action("Register", "Account")" class="text-uppercase">Register</a></li>
+                                    <li class="hidden-xs"><i class="fa fa-sign-in text-primary"></i> <a href="@Url.Action("Login", "Account")" class="text-uppercase">Login</a></li>*@
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="navbar navbar-default">
+                    <!--mobile collapse menu button-->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                    <!--everything within this div is collapsed on mobile-->
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav" id="main-menu">
+                            <li class="icon-link">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i></a>
+                                }
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <a href="@Url.Action("UnauthorizedIndex", "Home")"><i class="fa fa-home"></i></a>
+                                }
+
+                            </li>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <li>
+                                    <a href="@Url.Action("About", "Home")">Our Story</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Mission", "Home")">Our Mission</a>
+                                </li>
+                            }
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Tools<b class="caret"></b></a>
+                                    <!-- Dropdown Menu -->
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-header">My Tools</li>
+                                        <li><a href="@Url.Action("Index", "Accounts")" tabindex="-1" class="menu-item">Accounts</a></li>
+                                        <li><a href="@Url.Action("Index", "Budgets")" tabindex="-1" class="menu-item">Budgets</a></li>
+                                        <li><a href="@Url.Action("Index", "Transactions")" tabindex="-1" class="menu-item">Transactions</a></li>
+                                        <li class="dropdown-footer">My Tools</li>
+                                    </ul>
+                                </li>
+                            }
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li><a href="@Url.Action("Index", "HouseHolds")">My House</a></li>
+                            }
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account Options<b class="caret"></b></a>
+                                    <!-- Dropdown Menu -->
+                                    <ul class="dropdown-menu dropdown-menu-mm dropdown-menu-persist">
+                                        <ul>
+                                            <li class="dropdown-header">Options</li>
+                                            <li><a href="@Url.Action("ChangePassword", "Manage")">Change Password</a></li>
+                                            <li><a href="@Url.Action("ChangeName", "Manage")">Change Display Name</a></li>
+                                            @*<li><a href="@Url.Action("ChangeAddress", "Manage")">Change Address</a></li>*@
+                                        </ul>
+                                        <li class="dropdown-footer">
+                                            Account Options
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/.navbar-collapse -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== Region: #content ======== -->
+    <div class="container">
+        <div id="content">
+            <center>
+                @Html.ValidationSummary("", new { @class = "text-danger;alert alert-danger" })
+            </center>
+            @RenderBody()
+        </div>
+    </div>
+
+    <!-- ======== Region: #footer ======== -->
+    <footer id="footer" class="block block-bg-grey-dark" data-block-bg-img="img/bg_footer-map.png" data-stellar-background-ratio="0.4">
+        <div class="container">
+            <a href="#top" class="scrolltop">Top</a>
+            <div class="row" id="contact">
+
+                <div class="col-md-3">
+                    <address>
+                        <strong>Mandle</strong>
+                        <br>
+                        <br />
+                        <i class="fa fa-map-pin fa-fw text-primary"></i> North Carolina, USA
+                        <br>
+                        <i class="fa fa-phone fa-fw text-primary"></i> 123-123-1234
+                        <br>
+                        <i class="fa fa-envelope-o fa-fw text-primary"></i> Example@gmail.com
+                        <br>
+                    </address>
+                </div>
+
+                @using (Html.BeginForm("Contact", "Home", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="col-md-6" style="border:solid 1px orangered;padding-top:20px;padding-bottom:30px;background-color:orangered">
+                        <center>
+                            <h4 class="text-uppercase" style="padding-bottom:5px">
+                                <b>Feedback</b>
+                            </h4>
+                        </center>
+                        <div class="form">
+                            <form action="" method="post" role="form" class="contactForm">
+                                <div class="form-group">
+                                    <input type="text" name="FromName" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                                    <div class="validation"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" name="FromEmail" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                                    <div class="validation"></div>
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" name="Body" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                                    <div class="validation"></div>
+                                </div>
+                                <div class="text-center"><button style="background-color:white;color:black" class="btn btn-default" type="submit">Send Message</button></div>
+                            </form>
+                        </div>
+                    </div>
+                }
+
+
+                <div class="col-md-3">
+                    <center>
+                        <h4 class="text-uppercase">
+                            Follow Us On:
+                            <br />
+                        </h4>
+                        <!--social media icons-->
+                        <div class="social-media social-media-stacked" style="padding-left:80px">
+                            <a href="https://github.com/Ryancate1" title="Github" target="_blank"><i class="fa fa-github fa-fw"></i> Github</a>
+                            <a href="https://www.linkedin.com/in/ryan-cate-3b915214a/" title="Linkedin" target="_blank"><i class="fa fa-linkedin fa-fw"></i> LinkedIn</a>
+                        </div>
+                    </center>
+                </div>
+
+            </div>
+            <div class="row subfooter">
+                <div class="col-md-7">
+                    <p>Copyright © Ryan Cate</p>
+                </div>
+                <div class="col-md-5">
+                    <ul class="list-inline pull-right">
+                        <div class="credits">
+                            <!--
+                              All the links in the footer should remain intact.
+                              You can delete the links only if you purchased the pro version.
+                              Licensing information: https://bootstrapmade.com/license/
+                              Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Flexor
+                            -->
+                            <a href="https://bootstrapmade.com/">Free Bootstrap Templates</a> by BootstrapMade.com
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="Login" class="modal fade modal-lg" style="left:200px" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content modal-lg" style="background-color:darkorange">
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="pull-left" style="font-size:30px;color:black;background-color:transparent;border:none" data-dismiss="modal"><b>&times;</b></button>
+                            <h1 style="color:white;padding-top:50px">
+                                <b>Glad to see you <br /> again!</b>
+                            </h1>
+
+                            <h5 style="margin-top:75%">
+                                <b>
+                                    By clicking <i>Login</i>, you acctept our <a href="#" style="color:black">terms</a>
+                                    and <a href="#" style="color:black">conditions</a>.
+                                </b>
+                            </h5>
+
+                        </div>
+                        <div class="col-md-6" style="background-color:white;padding:20px 100px 100px 100px">
+                            
+                            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                
+                                <h2>
+                                    <b>
+                                        <i>Financial Helper</i>
+                                    </b>
+                                </h2>
+
+                                <hr />
+
+                                <div class="form-group">
+                                    <div>
+                                        <label>Email</label> <br />
+                                        <input type="email" style="width:300px;height:35px" name="Email" />
+                                    </div>
+                                </div>
+
+                                <br />
+
+                                <div class="form-group">
+                                    <div>
+                                        <label>Password</label> <br />
+                                        <input type="password" style="width:300px;height:35px" name="Password" />
+                                        <a href="@Url.Action("ForgotPassword", "Account")">Forgot your Password?</a>
+                                    </div>
+                                </div>
+
+                                <br />
+                                <br />
+
+                                <div class="form-group text-center">
+                                    <div>
+                                        <input type="submit" value="Log in" style="background-color:orange;color:white" class="btn btn-default btn-block" />
+                                    </div>
+                                </div>
+
+                                <center>
+                                    <a href="@Url.Action("Register", "Account")">Register as a new user</a>
+                                </center>
+                            }
+                        </div>
+                    </div>
+                    @*@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form - horizontal form - material", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <input name="Email" value="demo@portal.com" hidden />
+                            <input name="Password" value="Password1" hidden />
+                            <br />
+                            <input type="submit" class="btn btn-default btn-block" style="background-color:black;color:white;padding:15px" value="Try out our Live Demo!" />
+                        }*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Required JavaScript Libraries -->
+    <script src="~/Assets/Flexor/lib/jquery/jquery.min.js"></script>
+    <script src="~/Assets/Flexor/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Assets/Flexor/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/Assets/Flexor/lib/stellar/stellar.min.js"></script>
+    <script src="~/Assets/Flexor/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/Assets/Flexor/lib/counterup/counterup.min.js"></script>
+    <!-- Commented out unless needed.  Refer to documents for contact form.-->
+    @*<script src="~/Assets/Flexor/contactform/contactform.js"></script>*@
+
+    <!-- Template Specisifc Custom Javascript File -->
+    <script src="~/Assets/Flexor/js/custom.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
